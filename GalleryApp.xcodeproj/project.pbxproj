@@ -6,6 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		C6A6977B2CEBC9AB00D74C74 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = C6A6977A2CEBC9AB00D74C74 /* CombineMoya */; };
+		C6A6977D2CEBC9AB00D74C74 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = C6A6977C2CEBC9AB00D74C74 /* Moya */; };
+		C6A6977F2CEBC9AB00D74C74 /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = C6A6977E2CEBC9AB00D74C74 /* ReactiveMoya */; };
+		C6A697812CEBC9AB00D74C74 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = C6A697802CEBC9AB00D74C74 /* RxMoya */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		C6D0698F2CEBB9CC00A803AE /* GalleryApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GalleryApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +43,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C6A6977D2CEBC9AB00D74C74 /* Moya in Frameworks */,
+				C6A6977B2CEBC9AB00D74C74 /* CombineMoya in Frameworks */,
+				C6A697812CEBC9AB00D74C74 /* RxMoya in Frameworks */,
+				C6A6977F2CEBC9AB00D74C74 /* ReactiveMoya in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +89,10 @@
 			);
 			name = GalleryApp;
 			packageProductDependencies = (
+				C6A6977A2CEBC9AB00D74C74 /* CombineMoya */,
+				C6A6977C2CEBC9AB00D74C74 /* Moya */,
+				C6A6977E2CEBC9AB00D74C74 /* ReactiveMoya */,
+				C6A697802CEBC9AB00D74C74 /* RxMoya */,
 			);
 			productName = GalleryApp;
 			productReference = C6D0698F2CEBB9CC00A803AE /* GalleryApp.app */;
@@ -107,6 +122,9 @@
 			);
 			mainGroup = C6D069862CEBB9CC00A803AE;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				C6A697792CEBC9AB00D74C74 /* XCRemoteSwiftPackageReference "Moya" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C6D069902CEBB9CC00A803AE /* Products */;
 			projectDirPath = "";
@@ -149,8 +167,8 @@
 				INFOPLIST_FILE = GalleryApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -176,8 +194,8 @@
 				INFOPLIST_FILE = GalleryApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -333,6 +351,40 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C6A697792CEBC9AB00D74C74 /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.0.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C6A6977A2CEBC9AB00D74C74 /* CombineMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C6A697792CEBC9AB00D74C74 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = CombineMoya;
+		};
+		C6A6977C2CEBC9AB00D74C74 /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C6A697792CEBC9AB00D74C74 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
+		C6A6977E2CEBC9AB00D74C74 /* ReactiveMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C6A697792CEBC9AB00D74C74 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = ReactiveMoya;
+		};
+		C6A697802CEBC9AB00D74C74 /* RxMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C6A697792CEBC9AB00D74C74 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = RxMoya;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C6D069872CEBB9CC00A803AE /* Project object */;
 }
