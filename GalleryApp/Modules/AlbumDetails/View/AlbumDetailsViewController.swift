@@ -6,18 +6,19 @@
 //
 
 import UIKit
+import Combine
 
 class AlbumDetailsViewController: UIViewController {
     @IBOutlet weak var photosSearchBar: UISearchBar!
     @IBOutlet weak var photosCollectionView: UICollectionView!
     
-    var albumID: Int
-    var albumTitle: String
+    private let viewModel: AlbumDetailsViewModel
+    private var cancellables = Set<AnyCancellable>()
     
-    var photos: Photos = []
-    
+    let albumTitle: String
+        
     init(albumID: Int, albumTitle: String) {
-        self.albumID = albumID
+        self.viewModel = AlbumDetailsViewModel(albumID: albumID)
         self.albumTitle = albumTitle
         super.init(nibName: String(describing: AlbumDetailsViewController.self), bundle: nil)
     }
@@ -29,6 +30,8 @@ class AlbumDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupBindings()
+        viewModel.loadPhotos()
     }
     
     private func setupUI() {
@@ -36,6 +39,15 @@ class AlbumDetailsViewController: UIViewController {
         photosCollectionView.delegate = self
         photosCollectionView.dataSource = self
         photosCollectionView.register(UINib(nibName: Constants.photoCellID, bundle: nil), forCellWithReuseIdentifier: Constants.photoCellID)
+    }
+    
+    private func setupBindings() {
+        viewModel.$filteredPhotos
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.photosCollectionView.reloadData()
+            }
+            .store(in: &cancellables)
     }
 }
 
@@ -45,12 +57,12 @@ extension AlbumDetailsViewController: UICollectionViewDelegate {
 
 extension AlbumDetailsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photos.count
+        return viewModel.filteredPhotos.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.photoCellID, for: indexPath) as! PhotoCell
-        let photoPath = photos[indexPath.row].url
+        let photoPath = viewModel.filteredPhotos[indexPath.item].url
         cell.config(photoPath: photoPath)
         return cell
     }
@@ -61,6 +73,12 @@ extension AlbumDetailsViewController: UICollectionViewDelegateFlowLayout {
         let photosPerRow: CGFloat = 3
         let collectionWidth = collectionView.bounds.width
         let cellWidth = collectionWidth / photosPerRow
-        return CGSize(width: cellWidth, height: cellWidth/1.4)
+        return CGSize(width: cellWidth, height: cellWidth/1.3)
+    }
+}
+
+extension AlbumDetailsViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        viewModel.filterPhotos(by: searchText)
     }
 }

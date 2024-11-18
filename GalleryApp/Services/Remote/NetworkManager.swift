@@ -16,21 +16,24 @@ class NetworkManager {
     
     private init() {}
     
-    func fetchUsers() -> AnyPublisher<Users, MoyaError> {
+    func fetchUsers() -> AnyPublisher<Users, Error> {
         return provider.requestPublisher(.users)
             .map(Users.self)
+            .mapError { $0 as Error }
             .eraseToAnyPublisher()
     }
     
-    func fetchAlbums(userID: Int) -> AnyPublisher<Albums, MoyaError> {
+    func fetchAlbums(userID: Int) -> AnyPublisher<Albums, Error> {
         return provider.requestPublisher(.albums(userID: userID))
             .map(Albums.self)
+            .mapError { $0 as Error }
             .eraseToAnyPublisher()
     }
     
-    func fetchPhotos(albumID: Int) -> AnyPublisher<Photos, MoyaError> {
+    func fetchPhotos(albumID: Int) -> AnyPublisher<Photos, Error> {
         return provider.requestPublisher(.photos(albumID: albumID))
             .map([Photo].self)
+            .mapError { $0 as Error }
             .eraseToAnyPublisher()
     }
 }
