@@ -14,7 +14,8 @@ class AlbumDetailsViewController: UIViewController {
     
     private let viewModel: AlbumDetailsViewModel
     private var cancellables = Set<AnyCancellable>()
-    
+    private var searchTask: DispatchWorkItem?
+
     let albumTitle: String
         
     init(albumID: Int, albumTitle: String) {
@@ -48,6 +49,27 @@ class AlbumDetailsViewController: UIViewController {
                 self?.photosCollectionView.reloadData()
             }
             .store(in: &cancellables)
+        
+        viewModel.$error
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] error in
+                if let error = error {
+                    self?.showErrorAlert(error: error)
+                }
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$isLoading
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLoading in
+                if isLoading {
+                    self?.view.showLoadingIndicator()
+                } else {
+                    self?.view.hideLoadingIndicator()
+                }
+                self?.photosCollectionView.reloadData()
+            }
+            .store(in: &cancellables)
     }
 }
 
@@ -62,6 +84,11 @@ extension AlbumDetailsViewController: UICollectionViewDelegate {
 
 extension AlbumDetailsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if viewModel.filteredPhotos.isEmpty && !viewModel.isLoading {
+            collectionView.showEmptyMessage(Constants.noPhotosMessage)
+        } else {
+            collectionView.clean()
+        }
         return viewModel.filteredPhotos.count
     }
     
@@ -75,16 +102,20 @@ extension AlbumDetailsViewController: UICollectionViewDataSource {
 
 extension AlbumDetailsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let photosPerRow: CGFloat = 3
         let collectionWidth = collectionView.bounds.width
-        let cellWidth = collectionWidth / photosPerRow
-        return CGSize(width: cellWidth, height: cellWidth/1.3)
+        let cellWidth = collectionWidth / Constants.photosPerRow
+        return CGSize(width: cellWidth, height: cellWidth/Constants.cellAspectRatio)
     }
 }
 
 extension AlbumDetailsViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        viewModel.filterPhotos(by: searchText)
+        searchTask?.cancel()
+        let task = DispatchWorkItem { [weak self] in
+            self?.viewModel.filterPhotos(by: searchText)
+        }
+        searchTask = task
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: task)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {

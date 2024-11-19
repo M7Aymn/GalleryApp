@@ -10,7 +10,13 @@ import Moya
 import Combine
 import CombineMoya
 
-class NetworkManager {
+protocol NetworkManagerProtocol {
+    func fetchUsers() -> AnyPublisher<Users, Error>
+    func fetchAlbums(userID: Int) -> AnyPublisher<Albums, Error>
+    func fetchPhotos(albumID: Int) -> AnyPublisher<Photos, Error>
+}
+
+class NetworkManager: NetworkManagerProtocol {
     static let shared = NetworkManager()
     private let provider = MoyaProvider<GalleryService>()
     

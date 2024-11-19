@@ -45,13 +45,32 @@ class AlbumsViewController: UIViewController {
                 self?.albumsTableView.reloadData()
             }
             .store(in: &cancellables)
+        
+        viewModel.$error
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] error in
+                if let error = error {
+                    self?.showErrorAlert(error: error)
+                }
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$isLoading
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLoading in
+                if isLoading {
+                    self?.view.showLoadingIndicator()
+                } else {
+                    self?.view.hideLoadingIndicator()
+                }
+                self?.albumsTableView.reloadData()
+            }
+            .store(in: &cancellables)
     }
     
     private func updateUserInfo(user: User) {
-        let address = user.address
-        let fullAddress = [address.street, address.suite, address.city, address.zipcode].joined(separator: ", ")
         userNameLabel.text = user.name
-        addressLabel.text = fullAddress
+        addressLabel.text = user.formattedAddress
     }
 }
 
@@ -73,6 +92,11 @@ extension AlbumsViewController: UITableViewDelegate {
 
 extension AlbumsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if viewModel.albums.isEmpty && !viewModel.isLoading {
+            tableView.showEmptyMessage(Constants.noAlbumsMessage)
+        } else {
+            tableView.clean()
+        }
         return viewModel.albums.count
     }
     

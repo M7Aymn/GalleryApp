@@ -29,3 +29,9 @@ struct Company: Codable {
 }
 
 typealias Users = [User]
+
+extension User {
+    var formattedAddress: String {
+        [address.street, address.suite, address.city, address.zipcode].joined(separator: ", ")
+    }
+}

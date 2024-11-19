@@ -11,19 +11,28 @@ import Combine
 class AlbumDetailsViewModel {
     @Published var photos: Photos = []
     @Published var filteredPhotos: Photos = []
+    @Published var error: String?
+    @Published var isLoading = false
     private var cancellables = Set<AnyCancellable>()
-    
+    private let networkManager: NetworkManagerProtocol
     let albumID: Int
     
-    init(albumID: Int) {
+    init(albumID: Int, networkManager: NetworkManagerProtocol = NetworkManager.shared) {
         self.albumID = albumID
+        self.networkManager = networkManager
     }
     
     func loadPhotos() {
-        NetworkManager.shared.fetchPhotos(albumID: albumID)
-            .sink(receiveCompletion: { _ in }, receiveValue: { photos in
-                self.photos = photos
-                self.filteredPhotos = photos
+        isLoading = true
+        networkManager.fetchPhotos(albumID: albumID)
+            .sink(receiveCompletion: { [weak self] completion in
+                self?.isLoading = false
+                if case let .failure(error) = completion {
+                    self?.error = error.localizedDescription
+                }
+            }, receiveValue: { [weak self] photos in
+                self?.photos = photos
+                self?.filteredPhotos = photos
             })
             .store(in: &cancellables)
     }

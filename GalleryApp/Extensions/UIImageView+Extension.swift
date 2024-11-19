@@ -19,11 +19,8 @@ extension UIImageView {
             placeholder: UIImage(named: Constants.loadingImage),
             options: [.cacheOriginalImage]
         ) { result in
-            switch result {
-            case .failure(let error):
-                print(error.localizedDescription)
+            if case .failure = result {
                 self.image = UIImage(named: Constants.loadingFail)
-            default: break
             }
         }
     }
