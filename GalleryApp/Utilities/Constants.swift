@@ -9,4 +9,5 @@ import Foundation
 
 struct Constants {
     static let photoCellID = "PhotoCell"
+    static let shareImage = "square.and.arrow.up"
 }
