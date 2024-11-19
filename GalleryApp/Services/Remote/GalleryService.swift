@@ -44,7 +44,7 @@ extension GalleryService: TargetType {
             return .requestParameters(parameters: ["id": id], encoding: URLEncoding.queryString)
             
         case .albums(userID: let userID):
-            return .requestParameters(parameters: ["userID": userID], encoding: URLEncoding.queryString)
+            return .requestParameters(parameters: ["userId": userID], encoding: URLEncoding.queryString)
             
         case .photos(albumID: let albumID):
             return .requestParameters(parameters: ["albumId": albumID], encoding: URLEncoding.queryString)

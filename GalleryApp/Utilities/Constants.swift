@@ -9,5 +9,7 @@ import Foundation
 
 struct Constants {
     static let photoCellID = "PhotoCell"
+    static let loadingImage = "loading"
+    static let loadingFail = "downloadFail"
     static let shareImage = "square.and.arrow.up"
 }

@@ -16,7 +16,8 @@ class AlbumsViewModel {
     func loadUserAndAlbums() {
         NetworkManager.shared.fetchUsers()
             .flatMap { users -> AnyPublisher<[Album], Error> in
-                self.user = users.randomElement()
+//                self.user = users.randomElement()
+                self.user = users.first
                 guard let userID = self.user?.id else {
                     return Fail(error: URLError(.badURL))
                         .eraseToAnyPublisher()

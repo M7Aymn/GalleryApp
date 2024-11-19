@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Kingfisher
 
 class PhotoCell: UICollectionViewCell {
     @IBOutlet weak var photoImageView: UIImageView!
@@ -15,9 +14,13 @@ class PhotoCell: UICollectionViewCell {
         super.awakeFromNib()
     }
     
-    func config(photoPath: String) {
-        guard let url = URL(string: photoPath) else { return }
-        photoImageView.kf.setImage(with: url)
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        photoImageView.clean()
     }
-
+    
+    func config(photoPath: String) {
+        photoImageView.setImage(urlString: photoPath)
+    }
+    
 }

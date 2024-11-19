@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Kingfisher
 
 class PhotoViewerViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
@@ -31,9 +30,7 @@ class PhotoViewerViewController: UIViewController {
     private func setupUI() {
         title = "Zoom"
         scrollView.delegate = self
-        
-        guard let url = URL(string: photoPath) else { return }
-        photoImageView.kf.setImage(with: url)
+        photoImageView.setImage(urlString: photoPath)
         setupShareButton()
     }
     
